@@ -1,8 +1,8 @@
 {
-    "name": "test",
+   "name": "ClusterLearn",
     "version": "1.0.0",
     "manifest_version": 3,
-    "description": "test",
+    "description": "The best way to learn is in a group. ClusterLearn is a chrome extension that allows you to learn with your friends.",
     "permissions": [
         "tabs",
         "activeTab",
@@ -23,7 +23,7 @@
         "https://www.udemy.com/cart/subscribe/course/*/.*"
       ],
       "js": [
-        "content.js"
+        "src/main.tsx"
       ]
     }
   ],
