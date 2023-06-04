@@ -55,3 +55,12 @@ export type SuccessResponseData =   GetEmailVerifyResponse | AddedUserToCourseRe
 export type ErrorResponseData = ServerErrorResponse  | UserVerificationErrorResponse | AddToCourseErrorResponse
 
 export type ResponseData = SuccessResponseData|ErrorResponseData
+
+
+export type StatesTypesObject = {
+    verifyEmail  ?: boolean,
+    email  ?: string,
+    code  ?: string,
+    showCode  ?: boolean,
+    apiMessage ?: string
+}

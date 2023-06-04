@@ -1,8 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "CRXJS React Vite Example",
+  "name": "Cluster Learn",
   "version": "1.0.0",
-  "action": { "default_popup": "index.html" },
+  "action": { 
+    "default_popup": "index.html",
+    "default_title": "Cluster Learn",
+    "secondary_color": "#000000"
+   },
+  "permissions": ["storage", "activeTab", "scripting"],
   "content_scripts": [
     {
     "js": ["src/content.tsx"],
