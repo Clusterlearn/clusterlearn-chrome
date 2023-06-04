@@ -26,7 +26,8 @@ export const sendVerificationCode = async (email : string) => {
       email:email,
       url : url,
       paid : paid,
-      rememberToken:localStorage.getItem('remembermeToken')
+      // make sure the email in localstorage matches the email to be added to cluster before sending the remember me token
+      rememberToken:email.toLowerCase() == localStorage.getItem('remembermeToken')?.toLocaleLowerCase() ? localStorage.getItem('remembermeToken') : null
     })).data as NewResponse<ResponseData>
     if(data.status == 'error') throw new Error(data.message);
     return data;
