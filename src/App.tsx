@@ -1,17 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import { AxiosError } from 'axios'
-import './App.css'
 import { ErrorResponseData, NewResponse, StatesTypesObject } from './types/APIresponse'
 import { addToCluster, getCurrentTab, sendVerificationCode, verifyCode } from './helper'
 
 function App() {
-  const [verifyEmail, setVerifyEmail] = useState(false)
+  const [verifyEmail, setVerifyEmail] = useState(localStorage.getItem('remembermeToken') ? true : false)
   const [email, setEmail] = useState(localStorage.getItem('email') || '')
   const [code, setCode] = useState('');
   const [showCode, setShowCode] = useState(false);
   const [apiMessage, setApiMessage] = useState('')
   const RememberMe = useRef<HTMLInputElement|null>(null)
-  const [localStorageEmail] = useState(email !== '');
   
   const changeStates = (data : StatesTypesObject) => {
     const newdata  = {verifyEmail, email, code, showCode, apiMessage, ...data}
@@ -35,10 +33,15 @@ function App() {
         return
       }
       if(code){
-        const response = await verifyCode(email, code)
-        if(RememberMe.current?.checked) localStorage.setItem('email', email)
-        RememberMe.current?.setAttribute('checked', 'false')
-        if(response.status == 'success') changeStates({verifyEmail:true,showCode:false, code:'',apiMessage:response.message})
+        const response = await verifyCode(email, code, RememberMe.current?.checked)
+        if(response.status == 'success') {
+          RememberMe.current?.setAttribute('checked', 'false')
+          changeStates({verifyEmail:true,showCode:false, code:'',apiMessage:response.message})
+          if(response.data.deviceToken && RememberMe.current?.checked){
+             localStorage.setItem('remembermeToken', response.data.deviceToken)
+             localStorage.setItem('email', email)
+          }
+        }
       }
       else{
         const response = await sendVerificationCode(email)
@@ -61,7 +64,7 @@ function App() {
       <h1>Cluster Learn</h1>
       SignUp for This course
       <form onSubmit={handleForm} >
-        <input type="email" title="email" placeholder="put in your email" value={email} readOnly={localStorageEmail} onChange={e=> setEmail(e.target.value)}/>
+        <input type="email" title="email" placeholder="put in your email" value={email} readOnly={showCode} onChange={e=> setEmail(e.target.value)}/>
         {
           showCode ?  <input type="text" title="code" placeholder="verification code" onChange={e => setCode(e.target.value)} /> 
           : ''

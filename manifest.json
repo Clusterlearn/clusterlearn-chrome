@@ -11,7 +11,7 @@
   "content_scripts": [
     {
     "js": ["src/content.tsx"],
-    "matches": ["https://www.google.com/*", "http://localhost/*"]
+    "matches": ["https://*.udemy.com/*"]
     }
   ],
   "background": {

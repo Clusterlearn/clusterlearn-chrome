@@ -29,7 +29,8 @@ export type AddedUserToCourseResponse = {
 
 export type GetEmailVerifyResponse = {
     message:string,
-    email:string
+    email:string,
+    deviceToken ?: string
 }
 
 
