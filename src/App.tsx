@@ -2,9 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { AxiosError } from 'axios'
 import './App.css'
 import { ErrorResponseData, NewResponse, StatesTypesObject } from './types/APIresponse'
-import { addToCluster, sendVerificationCode, verifyCode } from './helper'
-import { Messages } from './types/chromeMessages'
-import { ChromeRuntimeResponse, GetURLRESPONSE } from './types/chromeResponse'
+import { addToCluster, getCurrentTab, sendVerificationCode, verifyCode } from './helper'
 
 function App() {
   const [verifyEmail, setVerifyEmail] = useState(false)
@@ -13,10 +11,7 @@ function App() {
   const [showCode, setShowCode] = useState(false);
   const [apiMessage, setApiMessage] = useState('')
   const RememberMe = useRef<HTMLInputElement|null>(null)
-  let localStorageEmail = false
-  useEffect(() => {
-    localStorageEmail = email !== '';
-  }, [])
+  const [localStorageEmail] = useState(email !== '');
   
   const changeStates = (data : StatesTypesObject) => {
     const newdata  = {verifyEmail, email, code, showCode, apiMessage, ...data}
@@ -27,16 +22,13 @@ function App() {
     setApiMessage(newdata.apiMessage)
   }
   
-  const getUrl = async () => {
-    const data: ChromeRuntimeResponse<GetURLRESPONSE> = await chrome.runtime.sendMessage(Messages.GET_CURRENT_TAB_URL);
-    console.log(data)
-    return data?.data.url
-  }
+ 
   const handleForm = async (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const url = await getUrl()
+    const url = await getCurrentTab()
     console.log(url)
     try{
+      if(!url) throw new Error('Invalid url')
       if(verifyEmail){
         const response = await addToCluster(email, url)
         if(response.status == 'success') changeStates({verifyEmail:false,showCode:false,email:'',code:'',apiMessage : response.message})
@@ -63,7 +55,6 @@ function App() {
       setApiMessage((e as Error).message)
     }
   }
-
 
   return (
     <>

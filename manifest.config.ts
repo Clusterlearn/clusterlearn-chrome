@@ -19,4 +19,7 @@ export default defineManifest(async (env) => ({
   version: `${major}.${minor}.${patch}.${label}`,
   // semver is OK in "version_name"
   version_name: version,
+  background : {
+    service_worker : 'src/background.ts'
+  }
 }))
