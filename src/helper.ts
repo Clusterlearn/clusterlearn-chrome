@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:5000"
+const ENDPOINT = import.meta.env.VITE_API_HOST
 import axios from "axios";
 import { GetEmailVerifyResponse, NewResponse, ResponseData } from "./types/APIresponse";
 
