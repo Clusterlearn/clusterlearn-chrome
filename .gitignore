@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# any vite timestamp
+vite.config.ts.timestamp-*
