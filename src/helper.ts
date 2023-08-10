@@ -2,7 +2,6 @@ const ENDPOINT = import.meta.env.VITE_API_HOST
 import axios from "axios";
 import { GetEmailVerifyResponse, NewResponse, ResponseData } from "./types/APIresponse";
 
-
 export const sendVerificationCode = async (email : string) => {
     const data = (await axios.post(`${ENDPOINT}/user/getverify`, {
       email:email
